@@ -55,15 +55,17 @@ function injectHeader() {
         <button class="mobile-nav-close" aria-label="Close menu">✕</button>
       </div>
       <a href="${basePath}index.html">Home</a>
-      <a href="${basePath}services/tiktok.html">TikTok Shop Management</a>
-      <a href="${basePath}services/shopify.html">Shopify Development</a>
-      <a href="${basePath}services/amazon.html">Amazon Brand Management</a>
+      <div class="mobile-dropdown">
+        <button class="mobile-dropdown-btn">Services <span class="dropdown-icon">▼</span></button>
+        <div class="mobile-dropdown-content">
+          <a href="${basePath}services/tiktok.html">TikTok Shop Management</a>
+          <a href="${basePath}services/shopify.html">Shopify Development</a>
+          <a href="${basePath}services/amazon.html">Amazon Brand Management</a>
+        </div>
+      </div>
       <a href="${basePath}pages/process.html">Process</a>
       <a href="${basePath}pages/case-studies.html">Case Studies</a>
       <a href="${basePath}pages/about.html">About Us</a>
-      <a href="${basePath}pages/blog.html">Blog</a>
-      <a href="${basePath}pages/guides.html">Guides</a>
-      <a href="${basePath}pages/careers.html">Careers</a>
       <a href="${basePath}pages/contact.html" class="mobile-nav-cta">Get Started</a>
     </nav>
   `;
@@ -161,10 +163,25 @@ function setupMobileMenu() {
       closeBtn.addEventListener('click', closeMenu);
     }
     
-    const mobileLinks = mobileNav.querySelectorAll('a');
+    const mobileLinks = mobileNav.querySelectorAll('a:not(.mobile-dropdown-content a)');
     mobileLinks.forEach(link => {
       link.addEventListener('click', closeMenu);
     });
+
+    const mobileSubLinks = mobileNav.querySelectorAll('.mobile-dropdown-content a');
+    mobileSubLinks.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    const mobileDropdownBtn = mobileNav.querySelector('.mobile-dropdown-btn');
+    if (mobileDropdownBtn) {
+      mobileDropdownBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        content.classList.toggle('show');
+      });
+    }
   }
   
   const footerTitles = document.querySelectorAll('.footer-title.footer-collapse');
