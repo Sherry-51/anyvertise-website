@@ -212,10 +212,33 @@ document.addEventListener('submit', function(e) {
   const form = e.target;
   if (form.id === 'contactForm') {
     e.preventDefault();
-    const formContainer = form.closest('.contact-container');
-    const successMessage = formContainer.querySelector('.form-success');
-    form.style.display = 'none';
-    successMessage.classList.add('show');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML = 'Sending...';
+    submitBtn.disabled = true;
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        const formContainer = form.closest('.contact-container');
+        const successMessage = formContainer.querySelector('.form-success');
+        form.style.display = 'none';
+        if (successMessage) successMessage.classList.add('show');
+      } else {
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+        alert('Oops! There was a problem submitting your form. Please try again.');
+      }
+    }).catch(error => {
+      submitBtn.innerHTML = originalBtnText;
+      submitBtn.disabled = false;
+      alert('Oops! There was a problem submitting your form. Please try again.');
+    });
   }
 });
 
