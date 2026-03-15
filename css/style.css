@@ -590,6 +590,14 @@ main {
   justify-content: center;
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.service-brand-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.3));
 }
 
 .service-title {
